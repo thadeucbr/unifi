@@ -1,0 +1,25 @@
+version: "2.4"
+services:
+  unifi-controller:
+    image: ghcr.io/linuxserver/unifi-controller
+    container_name: unifi-controller
+    environment:
+      - PUID=1502
+      - PGID=1502
+    volumes:
+      - ./data:/config
+    restart: unless-stopped
+    networks:
+      unifi:
+        ipv4_address: 192.168.1.232
+
+networks:
+  unifi:
+    driver: macvlan
+    driver_opts:
+      parent: wlp2s0
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
+          ip_range: 192.168.1.0/32
+          gateway: 192.168.1.1
